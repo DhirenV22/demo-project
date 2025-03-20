@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Pricing System Diagram</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .diagram-container {
+      position: relative;
+      width: 800px;
+      height: 450px;
+      background-color: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 20px;
+      overflow: hidden;
+    }
+    
+    .title {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 30px;
+      color: #2d3748;
+      font-weight: 700;
+    }
+    
+    .component {
+      position: absolute;
+      width: 180px;
+      height: 90px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+    
+    .component:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    
+    .component-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    
+    .component-subtitle {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+    
+    .tooltip {
+      position: absolute;
+      bottom: -70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #2d3748;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s, bottom 0.3s;
+      pointer-events: none;
+      width: 200px;
+      text-align: center;
+      z-index: 20;
+    }
+    
+    .component:hover .tooltip {
+      opacity: 1;
+      bottom: -50px;
+    }
+    
+    .connection {
+      position: absolute;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%);
+      z-index: 5;
+    }
+    
+    .arrow {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      z-index: 5;
+    }
+    
+    /* Specific component styles */
+    #salary-api {
+      top: 80px;
+      left: 30px;
+      background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+    }
+    
+    #piper-model {
+      top: 80px;
+      left: 310px;
+      background: linear-gradient(135deg, #2196f3 0%, #1565c0 100%);
+    }
+    
+    #bill-rate {
+      top: 80px;
+      left: 590px;
+      background: linear-gradient(135deg, #9c27b0 0%, #6a1b9a 100%);
+    }
+    
+    #lcat-db {
+      top: 280px;
+      left: 310px;
+      background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+    }
+    
+    #pricing-output {
+      top: 280px;
+      left: 590px;
+      background: linear-gradient(135deg, #ff5722 0%, #d84315 100%);
+    }
+    
+    /* Connection styles */
+    #conn1 {
+      top: 125px;
+      left: 210px;
+      width: 100px;
+    }
+    
+    #conn2 {
+      top: 125px;
+      left: 490px;
+      width: 100px;
+    }
+    
+    #conn3 {
+      top: 170px;
+      left: 399px;
+      height: 110px;
+      width: 3px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%);
+    }
+    
+    #conn4 {
+      top: 170px;
+      left: 679px;
+      height: 110px;
+      width: 3px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%);
+    }
+    
+    #conn5 {
+      top: 325px;
+      left: 490px;
+      width: 100px;
+    }
+    
+    /* Arrow styles */
+    .arrow-right {
+      border-width: 6px 0 6px 8px;
+      border-color: transparent transparent transparent rgba(0,0,0,0.5);
+    }
+    
+    .arrow-down {
+      border-width: 8px 6px 0 6px;
+      border-color: rgba(0,0,0,0.5) transparent transparent transparent;
+    }
+    
+    #arrow1 {
+      top: 122px;
+      left: 310px;
+    }
+    
+    #arrow2 {
+      top: 122px;
+      left: 590px;
+    }
+    
+    #arrow3 {
+      top: 280px;
+      left: 396px;
+    }
+    
+    #arrow4 {
+      top: 280px;
+      left: 676px;
+    }
+    
+    #arrow5 {
+      top: 322px;
+      left: 590px;
+    }
+    
+    /* Icon styles */
+    .icon {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    
+    @media (max-width: 820px) {
+      .diagram-container {
+        transform: scale(0.8);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="diagram-container">
+    <h1 class="title">Pricing System Architecture</h1>
+    
+    <!-- Components -->
+    <div id="salary-api" class="component">
+      <div class="icon">🔌</div>
+      <div class="component-title">Salary.com API</div>
+      <div class="component-subtitle">Data Source</div>
+      <div class="tooltip">Provides market salary data as input to the pricing system</div>
+    </div>
+    
+    <div id="piper-model" class="component">
+      <div class="icon">🧮</div>
+      <div class="component-title">PIPER Model</div>
+      <div class="component-subtitle">Processing</div>
+      <div class="tooltip">Processes salary data and applies statistical models</div>
+    </div>
+    
+    <div id="bill-rate" class="component">
+      <div class="icon">⚙️</div>
+      <div class="component-title">Bill Rate Engine</div>
+      <div class="component-subtitle">Calculation</div>
+      <div class="tooltip">Calculates final bill rates based on model outputs</div>
+    </div>
+    
+    <div id="lcat-db" class="component">
+      <div class="icon">💾</div>
+      <div class="component-title">LCAT Database</div>
+      <div class="component-subtitle">Storage</div>
+      <div class="tooltip">Stores labor categories and their attributes</div>
+    </div>
+    
+    <div id="pricing-output" class="component">
+      <div class="icon">📊</div>
+      <div class="component-title">Pricing Output</div>
+      <div class="component-subtitle">Results</div>
+      <div class="tooltip">Final pricing data ready for client presentation</div>
+    </div>
+    
+    <!-- Connections -->
+    <div id="conn1" class="connection"></div>
+    <div id="conn2" class="connection"></div>
+    <div id="conn3" class="connection"></div>
+    <div id="conn4" class="connection"></div>
+    <div id="conn5" class="connection"></div>
+    
+    <!-- Arrows -->
+    <div id="arrow1" class="arrow arrow-right"></div>
+    <div id="arrow2" class="arrow arrow-right"></div>
+    <div id="arrow3" class="arrow arrow-down"></div>
+    <div id="arrow4" class="arrow arrow-down"></div>
+    <div id="arrow5" class="arrow arrow-right"></div>
+  </div>
+
+  <script>
+    // Add pulse effect to show interactivity
+    document.querySelectorAll('.component').forEach(comp => {
+      setTimeout(() => {
+        comp.style.transform = 'translateY(-5px)';
+        setTimeout(() => {
+          comp.style.transform = 'translateY(0)';
+        }, 300);
+      }, Math.random() * 1000);
+    });
+    
+    // For a real document, you might want to add click handlers
+    document.querySelectorAll('.component').forEach(comp => {
+      comp.addEventListener('click', () => {
+        // This would activate a modal or additional information
+        // For now, we'll just add a subtle effect
+        comp.style.transform = 'scale(1.05)';
+        setTimeout(() => {
+          comp.style.transform = 'scale(1)';
+        }, 200);
+      });
+    });
+  </script>
+</body>
+</html>
